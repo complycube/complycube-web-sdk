@@ -1,0 +1,97 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ComplyCube Verification</title>
+    <script src="https://assets.complycube.com/web-sdk/v1/complycube.min.js"></script>
+    <link rel="stylesheet" href="https://assets.complycube.com/web-sdk/v1/style.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .verification-button {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .verification-button:hover {
+            background-color: #3a7bc8;
+        }
+    </style>
+
+    <script>
+        var complycube = {};
+
+        function startVerification() {
+            complycube = ComplyCube.mount({
+                token: "<SDK_TOKEN", // Add you SDK client token that you generated here
+                // Customise the stages array to change the capture journey
+                stages: [
+                    {
+                        "name": "intro",
+                        "options": {}
+                    },
+                    {
+                        "name": "userConsentCapture"
+                    },
+                    {
+                        "name": "documentCapture",
+                        "options": {
+                            "documentTypes": {
+                                "driving_license": false,
+                                "national_identity_card": true,
+                                "residence_permit": false,
+                                "passport": true
+                            },
+                            "crossDeviceOnly": false
+                        }
+                    },
+                    {
+                        "name": "faceCapture",
+                        "options": {
+                            "mode": "photo"
+                        }
+                    },
+                    {
+                        "name": "poaCapture",
+                        "options": {}
+                    },
+                    {
+                        "name": "completion",
+                        "options": {}
+                    }
+                ],
+                onComplete: function (data) {
+                    console.log("Capture complete", data);
+                },
+                onError: function (data) {
+                    console.log("Error during capture:", data);
+                }
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <div id="complycube-mount"></div>
+    <button class="verification-button" onClick="startVerification()">
+        Start Verification
+    </button>
+</body>
+
+</html>
